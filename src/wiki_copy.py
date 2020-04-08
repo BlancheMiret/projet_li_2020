@@ -27,7 +27,7 @@ for i in range(1, len(sys.argv)) :
 			print("%s Wikipedia page does not exist." % sys.argv[i])
 			continue
 
-	#format the name for the ending file
+	#format the name for the resulting file
 	name = '../documents/'
 	c = 0
 	for word in sys.argv[i].split() :
