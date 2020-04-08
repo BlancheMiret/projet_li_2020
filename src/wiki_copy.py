@@ -16,16 +16,25 @@ wiki = wikipediaapi.Wikipedia(
 	language = 'fr',
 	extract_format = wikipediaapi.ExtractFormat.WIKI)
 
+print(1)
 
 for i in range(1, len(sys.argv)) :
 
+	#livre
+	#roman
+	#bande dessinée
+
 	#retrieve the page
-	page = wiki.page(sys.argv[i] + ' (livre)')
+	types = [' (livre)', ' (roman)', ' (bande dessinée)', '' ]
+
+	page = ''
+	for t in types :
+		page =  wiki.page(sys.argv[i] + t)
+		if page.exists() : break
 	if not page.exists() :
-		page = wiki.page(sys.argv[i])
-		if not page.exists() :
-			print("%s Wikipedia page does not exist." % sys.argv[i])
-			continue
+		print("%s Wikipedia page does not exist." % sys.argv[i])
+		continue
+			
 
 	#format the name for the resulting file
 	name = '../documents/'
