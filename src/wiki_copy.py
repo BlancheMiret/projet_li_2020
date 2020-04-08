@@ -4,7 +4,6 @@
 #run $pip3 install wikipedia-api
 
 import wikipediaapi
-#import wikipedia
 import sys
 
 if len(sys.argv) != 2 :
@@ -16,11 +15,6 @@ if len(sys.argv) != 2 :
 wiki = wikipediaapi.Wikipedia(
 	language = 'fr',
 	extract_format = wikipediaapi.ExtractFormat.WIKI)
-
-#wikipedia.set_lang('fr')
-#print(wikipedia.suggest('Citadelle'))
-#print(wikipedia.summary('La Horde du Contrevent (livre)'))
-
 
 #retrieve the page
 page = wiki.page(sys.argv[1] + ' (livre)')
