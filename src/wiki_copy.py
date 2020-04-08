@@ -6,8 +6,8 @@
 import wikipediaapi
 import sys
 
-if len(sys.argv) != 2 :
-	print("usage : ./wiki_copy.py page_name")
+if len(sys.argv) < 2 :
+	print("usage : ./wiki_copy.py 'page_name1' 'page_name2' ... ")
 	exit()
 
 
@@ -16,27 +16,30 @@ wiki = wikipediaapi.Wikipedia(
 	language = 'fr',
 	extract_format = wikipediaapi.ExtractFormat.WIKI)
 
-#retrieve the page
-page = wiki.page(sys.argv[1] + ' (livre)')
-if not page.exists() :
-	print("This Wikipedia page does not exist.")
-	exit()
 
+for i in range(1, len(sys.argv)) :
 
-#format the name for the ending file
-name = '../documents/'
-i = 0
-for word in sys.argv[1].split() :
-	if i == 0 : name += word.lower()
-	else : name += '_' + word
-	i += 1
+	#retrieve the page
+	page = wiki.page(sys.argv[i] + ' (livre)')
+	if not page.exists() :
+		page = wiki.page(sys.argv[i])
+		if not page.exists() :
+			print("%s Wikipedia page does not exist." % sys.argv[i])
+			continue
 
+	#format the name for the ending file
+	name = '../documents/'
+	c = 0
+	for word in sys.argv[i].split() :
+		if c == 0 : name += word.lower()
+		else : name += '_' + word
+		c += 1
 
-#write the file
-with open(name, 'w+') as fd :
-	fd.write(sys.argv[1] + "\n\n")
-	for line in page.text :
-		fd.write(line)
+	#write the file
+	with open(name, 'w+') as fd :
+		fd.write(sys.argv[1] + "\n\n")
+		for line in page.text :
+			fd.write(line)
 
-print("The file was correctly written.")
+	print("The file %s was correctly written." % sys.argv[i])
 
