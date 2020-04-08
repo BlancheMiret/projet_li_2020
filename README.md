@@ -17,15 +17,15 @@ pip3 install wikipedia_api
 #### Usage
 
 ```bash
-./widi_copy.py 'name_of_wikipedia_page' 'name2' ...
+./widi_copy.py "name of wikipedia page" "name2" ...
 ```
 
-The script manages ambiguous names and retrieve the one corresponding to a book if existing.
+The script manages ambiguous names and should retrieve the one corresponding to a book if existing.
 
 ### Exemple
 
 ```bash
-./wiki_copy.py 'qslkfj' 'Citadelle' 'Vol de nuit'
+./wiki_copy.py "qslkfj" "Citadelle" "L'âge de raison"
 ```
 
 Answer :

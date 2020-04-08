@@ -16,8 +16,6 @@ wiki = wikipediaapi.Wikipedia(
 	language = 'fr',
 	extract_format = wikipediaapi.ExtractFormat.WIKI)
 
-print(1)
-
 for i in range(1, len(sys.argv)) :
 
 	#livre
@@ -25,8 +23,7 @@ for i in range(1, len(sys.argv)) :
 	#bande dessinée
 
 	#retrieve the page
-	types = [' (livre)', ' (roman)', ' (bande dessinée)', '' ]
-
+	types = [' (livre)', ' (roman)', ' (bande dessinée)', ' (théâtre)', '' ]
 	page = ''
 	for t in types :
 		page =  wiki.page(sys.argv[i] + t)
@@ -46,7 +43,7 @@ for i in range(1, len(sys.argv)) :
 
 	#write the file
 	with open(name, 'w+') as fd :
-		fd.write(sys.argv[1] + "\n\n")
+		fd.write(sys.argv[i] + "\n\n")
 		for line in page.text :
 			fd.write(line)
 
