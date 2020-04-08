@@ -32,7 +32,7 @@ for i in range(1, len(sys.argv)) :
 	c = 0
 	for word in sys.argv[i].split() :
 		if c == 0 : name += word.lower()
-		else : name += '_' + word
+		else : name += '_' + word.lower()
 		c += 1
 
 	#write the file
