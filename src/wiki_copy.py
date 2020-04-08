@@ -42,7 +42,7 @@ for i in range(1, len(sys.argv)) :
 		c += 1
 
 	#write the file
-	with open(name, 'w+') as fd :
+	with open(name, 'w+', encoding='utf8') as fd :
 		fd.write(sys.argv[i] + "\n\n")
 		for line in page.text :
 			fd.write(line)
