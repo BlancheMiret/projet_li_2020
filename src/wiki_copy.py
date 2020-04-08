@@ -23,7 +23,7 @@ for i in range(1, len(sys.argv)) :
 	#bande dessinée
 
 	#retrieve the page
-	types = [' (livre)', ' (roman)', ' (bande dessinée)', ' (théâtre)' '' ]
+	types = [' (livre)', ' (roman)', ' (bande dessinée)', ' (théâtre)', '' ]
 	page = ''
 	for t in types :
 		page =  wiki.page(sys.argv[i] + t)
