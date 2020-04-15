@@ -2,7 +2,20 @@
 
 This is a project concerning search engines.
 
+## METHOD
 
+### TF-IDF
+
+TF = measure
+
+Cf [TF-IDF Wikipedia page ](https://fr.wikipedia.org/wiki/TF-IDF#cite_note-1)
+
+
+### Cosinus similarity
+
+```math
+a^2 
+```
 
 ### Adding documents to DataBase
 
