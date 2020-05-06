@@ -34,7 +34,7 @@ for i in range(1, len(sys.argv)) :
 			
 
 	#format the name for the resulting file
-	name = '../documents/'
+	name = '../bdd_utf8/'
 	c = 0
 	for word in sys.argv[i].split() :
 		if c == 0 : name += word.lower()
@@ -42,7 +42,7 @@ for i in range(1, len(sys.argv)) :
 		c += 1
 
 	#write the file
-	with open(name, 'w+', encoding='utf8') as fd :
+	with open(name, 'w+', encoding='utf-8') as fd :
 		fd.write(sys.argv[i] + "\n\n")
 		for line in page.text :
 			fd.write(line)
