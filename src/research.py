@@ -16,15 +16,18 @@ docs = []
 path = os.path.join(os.path.abspath(os.getcwd()), "../bdd_utf8") # pour travailler en chemin absolu
 for dirpath, dirnames, filenames in os.walk(path) :
 	for file in filenames : 
-		print(os.path.join(dirpath, file))
+		#print(os.path.join(dirpath, file))
 		docs.append(os.path.join(dirpath, file))
 
 
 # Créer le vocabulaire de la recherche en ligne de commande
 vocab = {}
+request = []
 i = -1
 for arg in sys.argv :
-	if (i != -1) : vocab[arg] = i # Commence à 0 
+	if (i != -1) : 
+		vocab[arg] = i # Commence à 0 
+		request.append(arg)
 	i += 1
 
 # Créer matrice des coordonnées (documents / terme)
@@ -33,5 +36,34 @@ M = vectorizer.fit_transform(docs)
 
 print("Features names")
 print(vectorizer.get_feature_names()) # les termes
-print("Vocaluary")
+print("Vocabulary")
 print(vectorizer.vocabulary_) #les indices des termes, bon à savoir
+print(M)
+
+print("#########################################################")
+
+vectorizer2 = TfidfVectorizer(input='content', vocabulary = vocab)
+Y = vectorizer2.fit_transform(request)
+print(Y)
+
+def distance_req(d1) : #d1 : indice du doc !!
+	numerateur = 0
+	somme_carred1 = 0
+	somme_carrereq = 0
+	for i in range(len(vocab)) : #nb termes
+		numerateur += M[d1, i] * Y[0, i]
+		somme_carred1 += pow(M[d1,i],2)
+		somme_carrereq += pow(Y[0,i],2)
+	#print("numerateur = ", numerateur)
+	denumerateur = sqrt(somme_carred1)*sqrt(somme_carrereq)
+	#print("denumerateur = ", denumerateur)
+	return numerateur/denumerateur
+
+dist = {}
+for i in range(len(docs)) : #nb docs
+	dist[i] = distance_req(i)
+	print("Distance doc " + str(i) + " to request is :")
+	print(dist[i])
+	if(dist[i] > 0.5) : print(docs[i])
+
+
