@@ -22,12 +22,12 @@ for dirpath, dirnames, filenames in os.walk(path) :
 
 # Créer le vocabulaire de la recherche en ligne de commande
 vocab = {}
-request = []
-i = -1
+request = ""
+i = 0
 for arg in sys.argv :
-	if (i != -1) : 
-		vocab[arg] = i # Commence à 0 
-		request.append(arg)
+	if (i != 0) : 
+		vocab[arg] = i - 1 # Commence à 0 
+		request = request + " " + arg
 	i += 1
 
 # Créer matrice des coordonnées (documents / terme)
@@ -42,8 +42,9 @@ print(M)
 
 print("#########################################################")
 
+
 vectorizer2 = TfidfVectorizer(input='content', vocabulary = vocab)
-Y = vectorizer2.fit_transform(request)
+Y = vectorizer2.fit_transform([request])
 print(Y)
 
 def distance_req(d1) : #d1 : indice du doc !!
@@ -64,6 +65,6 @@ for i in range(len(docs)) : #nb docs
 	dist[i] = distance_req(i)
 	print("Distance doc " + str(i) + " to request is :")
 	print(dist[i])
-	if(dist[i] > 0.5) : print(docs[i])
+	if(dist[i] > 0.8) : print(docs[i])
 
 
