@@ -16,7 +16,7 @@ docs = []
 path = os.path.join(os.path.abspath(os.getcwd()), "../bdd_utf8") # pour travailler en chemin absolu
 for dirpath, dirnames, filenames in os.walk(path) :
 	for file in filenames : 
-		docs.append(os.path.join(dirpath, file))
+		if(file != ".DS_Store") : docs.append(os.path.join(dirpath, file))
 
 
 # Créer le vocabulaire de la recherche en ligne de commande
