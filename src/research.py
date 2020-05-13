@@ -16,7 +16,6 @@ docs = []
 path = os.path.join(os.path.abspath(os.getcwd()), "../bdd_utf8") # pour travailler en chemin absolu
 for dirpath, dirnames, filenames in os.walk(path) :
 	for file in filenames : 
-		#print(os.path.join(dirpath, file))
 		docs.append(os.path.join(dirpath, file))
 
 
@@ -31,21 +30,21 @@ for arg in sys.argv :
 	i += 1
 
 # Créer matrice des coordonnées (documents / terme)
-vectorizer = TfidfVectorizer(input='filename', vocabulary = vocab)
+vectorizer = TfidfVectorizer(input = 'filename', vocabulary = vocab)
 M = vectorizer.fit_transform(docs)
 
-print("Features names")
-print(vectorizer.get_feature_names()) # les termes
-print("Vocabulary")
-print(vectorizer.vocabulary_) #les indices des termes, bon à savoir
-print(M)
+#print("Features names")
+#print(vectorizer.get_feature_names()) # les termes
+#print("Vocabulary")
+#print(vectorizer.vocabulary_) #les indices des termes, bon à savoir
+#print(M)
 
-print("#########################################################")
+#print("#########################################################")
 
-
+# Créer matrice des coordonnées de la requête
 vectorizer2 = TfidfVectorizer(input='content', vocabulary = vocab)
 Y = vectorizer2.fit_transform([request])
-print(Y)
+#print(Y)
 
 def distance_req(d1) : #d1 : indice du doc !!
 	numerateur = 0
@@ -55,16 +54,24 @@ def distance_req(d1) : #d1 : indice du doc !!
 		numerateur += M[d1, i] * Y[0, i]
 		somme_carred1 += pow(M[d1,i],2)
 		somme_carrereq += pow(Y[0,i],2)
-	#print("numerateur = ", numerateur)
 	denumerateur = sqrt(somme_carred1)*sqrt(somme_carrereq)
-	#print("denumerateur = ", denumerateur)
-	return numerateur/denumerateur
+	if(denumerateur != 0) : return numerateur/denumerateur
+	return 0
 
+#print("#########################################################")
+
+print("\nThe documents corresponding to your research are :")
+
+# Filtrer les résultats
 dist = {}
+results = []
 for i in range(len(docs)) : #nb docs
 	dist[i] = distance_req(i)
-	print("Distance doc " + str(i) + " to request is :")
-	print(dist[i])
-	if(dist[i] > 0.8) : print(docs[i])
+	#print("Distance doc " + str(i) + " to request is :")
+	#print(dist[i])
+	if(dist[i] > 0.8) : results.append(docs[i])
 
+# Afficher les résultats
+for i in range(len(results)) : print(results[i])
+print()
 
