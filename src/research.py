@@ -25,6 +25,7 @@ request = ""
 i = 0
 for arg in sys.argv :
 	if (i != 0) : 
+		arg = arg.lower()
 		vocab[arg] = i - 1 # Commence à 0 
 		request = request + " " + arg
 	i += 1
