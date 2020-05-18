@@ -10,6 +10,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from math import *
 import sys
 import os
+import string
 
 # Récupérer la liste des noms des documents de la base de données :
 docs = []
@@ -72,7 +73,15 @@ for i in range(len(docs)) : #nb docs
 	#print(dist[i])
 	if(dist[i] > 0.8) : results.append(docs[i])
 
+#print("#########################################################")
+
+# Formater les résultats
+def format_title(title) :
+	title = title.replace("/Users/blanchemiret/Workspace/GitHub/projet_li_2020/src/../bdd_utf8/", "")
+	title = title.replace("_", " ")
+	return string.capwords(title)
+
 # Afficher les résultats
-for i in range(len(results)) : print(results[i])
+for i in range(len(results)) : print(format_title(results[i]))
 print()
 
