@@ -1,87 +1,32 @@
 #!/usr/bin/env python3
 
-#Étapes :
-# - Récupérer mots clés de la recherche passée en ligne de commande
-# - Créer matrice des coordonnées (documents + requête / termes)
-# - Créer tableau des distances (requête / documents)
-# - Choisir quels documents correspondent à la recherche et afficher leur nom
-
 from sklearn.feature_extraction.text import TfidfVectorizer
-from math import *
+from search_engine import *
 import sys
-import os
-import string
 
 # Récupérer la liste des noms des documents de la base de données :
-docs = []
-path = os.path.join(os.path.abspath(os.getcwd()), "../bdd_utf8") # pour travailler en chemin absolu
-for dirpath, dirnames, filenames in os.walk(path) :
-	for file in filenames : 
-		if(file != ".DS_Store") : docs.append(os.path.join(dirpath, file))
-
+docs = fetch_docs()
+nb_docs = len(docs)
 
 # Créer le vocabulaire de la recherche en ligne de commande
-vocab = {}
-request = ""
-i = 0
-for arg in sys.argv :
-	if (i != 0) : 
-		arg = arg.lower()
-		vocab[arg] = i - 1 # Commence à 0 
-		request = request + " " + arg
-	i += 1
+vocab = build_vocabulary(sys.argv)
+nb_terms = len(vocab)
+
+#########################################################
 
 # Créer matrice des coordonnées (documents / terme)
-vectorizer = TfidfVectorizer(input = 'filename', vocabulary = vocab)
+vectorizer = TfidfVectorizer(input = 'filename', sublinear_tf = True, vocabulary = vocab)
 M = vectorizer.fit_transform(docs)
 
-#print("Features names")
-#print(vectorizer.get_feature_names()) # les termes
-#print("Vocabulary")
-#print(vectorizer.vocabulary_) #les indices des termes, bon à savoir
-#print(M)
-
-#print("#########################################################")
-
 # Créer matrice des coordonnées de la requête
+request = build_request(sys.argv)
 vectorizer2 = TfidfVectorizer(input='content', vocabulary = vocab)
 Y = vectorizer2.fit_transform([request])
-#print(Y)
 
-def distance_req(d1) : #d1 : indice du doc !!
-	numerateur = 0
-	somme_carred1 = 0
-	somme_carrereq = 0
-	for i in range(len(vocab)) : #nb termes
-		numerateur += M[d1, i] * Y[0, i]
-		somme_carred1 += pow(M[d1,i],2)
-		somme_carrereq += pow(Y[0,i],2)
-	denumerateur = sqrt(somme_carred1)*sqrt(somme_carrereq)
-	if(denumerateur != 0) : return numerateur/denumerateur
-	return 0
+#########################################################
 
-#print("#########################################################")
-
-print("\nThe documents corresponding to your research are :")
-
-# Filtrer les résultats
-dist = {}
-results = []
-for i in range(len(docs)) : #nb docs
-	dist[i] = distance_req(i)
-	#print("Distance doc " + str(i) + " to request is :")
-	#print(dist[i])
-	if(dist[i] > 0.8) : results.append(docs[i])
-
-#print("#########################################################")
-
-# Formater les résultats
-def format_title(title) :
-	title = title.replace("/Users/blanchemiret/Workspace/GitHub/projet_li_2020/src/../bdd_utf8/", "")
-	title = title.replace("_", " ")
-	return string.capwords(title)
+# Liste dont les éléments sont de type [id du document, distance à la requête], trié 
+results = measure_distances(M, nb_docs, nb_terms, Y[0,0])
 
 # Afficher les résultats
-for i in range(len(results)) : print(format_title(results[i]))
-print()
-
+print_results(results, docs)
