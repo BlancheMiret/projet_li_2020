@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 
-#requirements : wikipedia api
-#run $pip3 install wikipedia-api
-
 import wikipediaapi
 import sys
 
 if len(sys.argv) < 2 :
 	print("usage : ./wiki_copy.py 'page_name1' 'page_name2' ... ")
 	exit()
-
 
 #Create wikipedia object
 wiki = wikipediaapi.Wikipedia(
@@ -48,4 +44,3 @@ for i in range(1, len(sys.argv)) :
 			fd.write(line)
 
 	print("The file %s was correctly written." % sys.argv[i])
-
